@@ -8,9 +8,10 @@ jobs:
       - uses: actions/checkout@v3
       - name: Fetch tags
         run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      - name: Configure Composer allow-plugins for GrumPHP
+        run: composer config --no-interaction allow-plugins.phpro/grumphp true
       - name: Install Dependencies for BC Check
-        run: |
-          composer install --no-interaction --prefer-dist --no-scripts --no-progress
+        run: composer install --no-interaction --prefer-dist --no-scripts --no-progress
       - name: Roave BC Check
         uses: docker://nyholm/roave-bc-check-ga
 
@@ -34,7 +35,7 @@ jobs:
           tools: ${{ matrix.composer-versions }}
           extensions: xdebug, mbstring, posix
       - name: Configure Composer allow-plugins for GrumPHP
-        run: composer config --no-plugins allow-plugins.phpro/grumphp true
+        run: composer config --no-interaction allow-plugins.phpro/grumphp true
       - name: Install Project Dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
       - name: Check Versions
