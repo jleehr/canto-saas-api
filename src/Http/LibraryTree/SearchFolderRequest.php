@@ -24,7 +24,7 @@ class SearchFolderRequest extends Request
     public const SORT_BY_SIZE = 'size';
     public const ORIENTATION_LANDSCAPE = 'landscape';
     public const ORIENTATION_PORTRAIT = 'portrait';
-    public const ORIENTATION_SQUARE= 'square';
+    public const ORIENTATION_SQUARE = 'square';
 
     protected string $folderId;
 
