@@ -1,5 +1,7 @@
 # PHP client for Canto API
 
+This library was originally maintained by [eCentral](https://github.com/ecentral) under the namespace fairway/canto-saas-api.
+
 ## Example usage
 
 ```php
