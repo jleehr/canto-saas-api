@@ -1,5 +1,5 @@
 {
-  "name": "fairway/canto-saas-api",
+  "name": "jleehr/canto-saas-api",
   "type": "library",
   "description": "Client library for Canto SaaS APIs.",
   "homepage": "https://github.com/ecentral/fairway-canto-saas-api/",
