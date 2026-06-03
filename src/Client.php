@@ -111,7 +111,7 @@ class Client
         return new MdcUrlHelper($this);
     }
 
-    public function getApiUrl(string $path = null): string
+    public function getApiUrl(?string $path = null): string
     {
         $url = sprintf(
             self::API_ROUTE,

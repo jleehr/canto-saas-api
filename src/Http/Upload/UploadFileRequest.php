@@ -28,7 +28,7 @@ final class UploadFileRequest extends UploadRequest
     private ?string $tag = null;
     private ?string $albumId = null;
 
-    public function __construct(string $filePath, GetUploadSettingResponse $settings, string $referId = null)
+    public function __construct(string $filePath, GetUploadSettingResponse $settings, ?string $referId = null)
     {
         $this->filePath = $filePath;
         $this->settings = $settings;

@@ -32,7 +32,7 @@ final class CreateShareLinksRequest extends Request
      * @param bool $allowPresets If true, can be downloaded as a preset.
      * @param bool $displayMetadata If true, user can view metadata.
      */
-    public function __construct(string $expires = null, bool $hideShareBy = true, bool $allowDownloadOriginal = true, bool $allowCropAndResize = true, bool $allowPresets = true, bool $displayMetadata = false)
+    public function __construct(?string $expires = null, bool $hideShareBy = true, bool $allowDownloadOriginal = true, bool $allowCropAndResize = true, bool $allowPresets = true, bool $displayMetadata = false)
     {
         $this->expires = $expires;
         $this->hideShareBy = $hideShareBy;
