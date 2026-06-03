@@ -10,10 +10,15 @@ jobs:
           # roave-backward-compatibility-check needs full history + tags to
           # locate the baseline release; a shallow clone fails fast.
           fetch-depth: 0
-      - name: Install Dependencies for BC Check
-        run: composer install --no-interaction --prefer-dist --no-scripts --no-progress
       - name: Roave BC Check
-        uses: docker://nyholm/roave-bc-check-ga
+        # Run the image manually so we can mark the workspace as a safe git
+        # directory; the container runs as root while the checkout is owned by
+        # the runner user, which otherwise trips git's dubious-ownership guard.
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE":/github/workspace -w /github/workspace \
+            --entrypoint sh nyholm/roave-bc-check-ga -c \
+            'git config --global --add safe.directory /github/workspace && PATH="/composer/vendor/bin:$PATH" roave-backward-compatibility-check'
 
   test:
     runs-on: ${{ matrix.operating-system }}
