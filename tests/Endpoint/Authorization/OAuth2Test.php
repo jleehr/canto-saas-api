@@ -21,15 +21,14 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
 class OAuth2Test extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function successfulObtainAccessToken(): void
     {
         $mockHandler = new MockHandler([
@@ -53,9 +52,7 @@ class OAuth2Test extends TestCase
         self::assertSame('refresh-token-1234', $response->getRefreshToken());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function obtainAccessTokenWithInvalidHttpResponseStatusCode(): void
     {
         $this->expectExceptionCode(1626447895);

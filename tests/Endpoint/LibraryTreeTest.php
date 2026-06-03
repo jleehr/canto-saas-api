@@ -22,15 +22,14 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
 class LibraryTreeTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function searchFolderContentSuccessfulObtainResponse(): void
     {
         $responseBody = '{' .
@@ -60,9 +59,7 @@ class LibraryTreeTest extends TestCase
         self::assertSame('test', $response->getMatchExpr());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function searchFolderContentExpectNotAuthorizedException(): void
     {
         $this->expectExceptionCode(1626717511);
@@ -83,9 +80,7 @@ class LibraryTreeTest extends TestCase
         $libraryTreeEndpoint->searchFolderContent($searchFolderRequest);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function searchFolderContentExpectUnexpectedHttpStatusException(): void
     {
         $this->expectExceptionCode(1627649307);
@@ -106,9 +101,7 @@ class LibraryTreeTest extends TestCase
         $libraryTreeEndpoint->searchFolderContent($searchFolderRequest);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTreeSuccessfulObtainResponse(): void
     {
         $responseBody = '{"results":[{"id":"test"}],"sortBy":"time","sortDirection":"descending"}';
@@ -126,9 +119,7 @@ class LibraryTreeTest extends TestCase
         self::assertSame('descending', $response->getSortDirection());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTreeExpectNotAuthorizedException(): void
     {
         $this->expectExceptionCode(1626717511);
@@ -143,9 +134,7 @@ class LibraryTreeTest extends TestCase
         $libraryTreeEndpoint->getTree($treeRequest);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTreeExpectUnexpectedHttpStatusException(): void
     {
         $this->expectExceptionCode(1627649307);

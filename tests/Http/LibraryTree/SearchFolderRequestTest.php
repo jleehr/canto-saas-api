@@ -12,13 +12,12 @@ declare(strict_types=1);
 namespace Fairway\CantoSaasApi\Tests\Http\LibraryTree;
 
 use Fairway\CantoSaasApi\Http\LibraryTree\SearchFolderRequest;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class SearchFolderRequestTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createRequestWithDefaultConfig(): void
     {
         $request = new SearchFolderRequest('test');
@@ -50,9 +49,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame(['test'], $request->getPathVariables());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setKeyword(): void
     {
         $request = new SearchFolderRequest('test');
@@ -61,9 +58,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('photo', $request->getQueryParams()['keyword']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setScheme(): void
     {
         $request = new SearchFolderRequest('test');
@@ -72,9 +67,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('image|video', $request->getQueryParams()['scheme']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setTags(): void
     {
         $request = new SearchFolderRequest('test');
@@ -83,9 +76,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('tag1|tag2+tag3', $request->getQueryParams()['tags']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setKeywords(): void
     {
         $request = new SearchFolderRequest('test');
@@ -94,9 +85,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('k1|k2+k3', $request->getQueryParams()['keywords']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setApproval(): void
     {
         $request = new SearchFolderRequest('test');
@@ -105,9 +94,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('approved|pending', $request->getQueryParams()['approval']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOwner(): void
     {
         $request = new SearchFolderRequest('test');
@@ -116,9 +103,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('test@example.tld', $request->getQueryParams()['owner']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFileSize(): void
     {
         $request = new SearchFolderRequest('test');
@@ -127,9 +112,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('10..10000', $request->getQueryParams()['fileSize']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCreated(): void
     {
         $request = new SearchFolderRequest('test');
@@ -138,9 +121,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('1626672536..1626772536', $request->getQueryParams()['created']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCreatedTime(): void
     {
         $request = new SearchFolderRequest('test');
@@ -149,9 +130,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('1626672536..1626772536', $request->getQueryParams()['createdTime']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setUploadedTime(): void
     {
         $request = new SearchFolderRequest('test');
@@ -160,9 +139,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('1626672536..1626772536', $request->getQueryParams()['uploadedTime']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLastModified(): void
     {
         $request = new SearchFolderRequest('test');
@@ -171,9 +148,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('1626672536..1626772536', $request->getQueryParams()['lastModified']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDimension(): void
     {
         $request = new SearchFolderRequest('test');
@@ -182,9 +157,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('300..2000', $request->getQueryParams()['dimension']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setResolution(): void
     {
         $request = new SearchFolderRequest('test');
@@ -193,9 +166,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('72..300', $request->getQueryParams()['resolution']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setOrientation(): void
     {
         $request = new SearchFolderRequest('test');
@@ -204,9 +175,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('square', $request->getQueryParams()['orientation']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDuration(): void
     {
         $request = new SearchFolderRequest('test');
@@ -215,9 +184,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('30..600', $request->getQueryParams()['duration']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPageNumber(): void
     {
         $request = new SearchFolderRequest('test');
@@ -226,9 +193,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('1..5', $request->getQueryParams()['pageNumber']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSortBy(): void
     {
         $request = new SearchFolderRequest('test');
@@ -237,9 +202,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('name', $request->getQueryParams()['sortBy']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSortDirection(): void
     {
         $request = new SearchFolderRequest('test');
@@ -248,9 +211,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame('ascending', $request->getQueryParams()['sortDirection']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLimit(): void
     {
         $request = new SearchFolderRequest('test');
@@ -259,9 +220,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame(50, $request->getQueryParams()['limit']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setStart(): void
     {
         $request = new SearchFolderRequest('test');
@@ -270,9 +229,7 @@ class SearchFolderRequestTest extends TestCase
         self::assertSame(5, $request->getQueryParams()['start']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setExactMatch(): void
     {
         $request = new SearchFolderRequest('test');

@@ -12,13 +12,12 @@ declare(strict_types=1);
 namespace Fairway\CantoSaasApi\Tests\Http\LibraryTree;
 
 use Fairway\CantoSaasApi\Http\LibraryTree\GetTreeRequest;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class GetTreeRequestTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createRequestWithDefaultConfig(): void
     {
         $request = new GetTreeRequest();
@@ -32,9 +31,7 @@ class GetTreeRequestTest extends TestCase
         self::assertNull($request->getPathVariables());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSort(): void
     {
         $request = new GetTreeRequest();
@@ -43,9 +40,7 @@ class GetTreeRequestTest extends TestCase
         self::assertSame('name', $request->getQueryParams()['sortBy']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSortDirection(): void
     {
         $request = new GetTreeRequest();
@@ -54,9 +49,7 @@ class GetTreeRequestTest extends TestCase
         self::assertSame('descending', $request->getQueryParams()['sortDirection']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLayer(): void
     {
         $request = new GetTreeRequest();

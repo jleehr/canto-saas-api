@@ -13,14 +13,13 @@ namespace Fairway\CantoSaasApi\Tests;
 
 use Fairway\CantoSaasApi\ClientOptions;
 use GuzzleHttp\Client;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
 class ClientOptionsTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function useDefaultValues(): void
     {
         $clientOptions = new ClientOptions([
@@ -38,9 +37,7 @@ class ClientOptionsTest extends TestCase
         self::assertSame('Canto PHP API client', $clientOptions->getHttpClientOptions()['userAgent']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCantoName(): void
     {
         $options = new ClientOptions([
@@ -51,9 +48,7 @@ class ClientOptionsTest extends TestCase
         self::assertSame('My name', $options->getCantoName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCantoDomain(): void
     {
         $options = new ClientOptions([
@@ -65,9 +60,7 @@ class ClientOptionsTest extends TestCase
         self::assertSame('canto.global', $options->getCantoDomain());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAppId(): void
     {
         $options = new ClientOptions([
@@ -78,9 +71,7 @@ class ClientOptionsTest extends TestCase
         self::assertSame('12345-Abc', $options->getAppId());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAppSecret(): void
     {
         $options = new ClientOptions([
@@ -91,9 +82,7 @@ class ClientOptionsTest extends TestCase
         self::assertSame('12345-Abc', $options->getAppSecret());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRedirectUri(): void
     {
         $options = new ClientOptions([
@@ -105,9 +94,7 @@ class ClientOptionsTest extends TestCase
         self::assertSame('http:/localhost', $options->getRedirectUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setHttpClient(): void
     {
         $options = new ClientOptions([
@@ -119,9 +106,7 @@ class ClientOptionsTest extends TestCase
         self::assertInstanceOf(Client::class, $options->getHttpClient());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLogger(): void
     {
         $options = new ClientOptions([
@@ -133,9 +118,7 @@ class ClientOptionsTest extends TestCase
         self::assertInstanceOf(NullLogger::class, $options->getLogger());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setHttpOptions(): void
     {
         $options = new ClientOptions([

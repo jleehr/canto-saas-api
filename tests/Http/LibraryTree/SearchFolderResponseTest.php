@@ -13,13 +13,12 @@ namespace Fairway\CantoSaasApi\Tests\Http\LibraryTree;
 
 use Fairway\CantoSaasApi\Http\LibraryTree\SearchFolderResponse;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class SearchFolderResponseTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createValidResponse(): void
     {
         $responseBody = '{' .
@@ -42,9 +41,7 @@ class SearchFolderResponseTest extends TestCase
         self::assertSame('test', $response->getMatchExpr());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwExceptionWithEmptyBody(): void
     {
         self::expectExceptionCode(1626434956);
@@ -52,9 +49,7 @@ class SearchFolderResponseTest extends TestCase
         new SearchFolderResponse(new Response(200, [], ''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwExceptionWithInvalidJsonBody(): void
     {
         self::expectExceptionCode(1626434988);

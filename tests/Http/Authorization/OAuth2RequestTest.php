@@ -12,13 +12,12 @@ declare(strict_types=1);
 namespace Fairway\CantoSaasApi\Tests\Http\Authorization;
 
 use Fairway\CantoSaasApi\Http\Authorization\OAuth2Request;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class OAuth2RequestTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createRequestWithDefaultConfig(): void
     {
         $request = new OAuth2Request();
@@ -37,9 +36,7 @@ class OAuth2RequestTest extends TestCase
         self::assertNull($request->getPathVariables());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAppId(): void
     {
         $request = new OAuth2Request();
@@ -48,9 +45,7 @@ class OAuth2RequestTest extends TestCase
         self::assertSame('app-id-1234', $request->getQueryParams()['app_id']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setAppSecret(): void
     {
         $request = new OAuth2Request();
@@ -59,9 +54,7 @@ class OAuth2RequestTest extends TestCase
         self::assertSame('app-secret-1234', $request->getQueryParams()['app_secret']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setGrantType(): void
     {
         $request = new OAuth2Request();
@@ -70,9 +63,7 @@ class OAuth2RequestTest extends TestCase
         self::assertSame('my_grant_type', $request->getQueryParams()['grant_type']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRedirectUri(): void
     {
         $request = new OAuth2Request();
@@ -81,9 +72,7 @@ class OAuth2RequestTest extends TestCase
         self::assertSame('http://localhost', $request->getQueryParams()['redirect_uri']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCode(): void
     {
         $request = new OAuth2Request();
@@ -92,9 +81,7 @@ class OAuth2RequestTest extends TestCase
         self::assertSame('code-1234', $request->getQueryParams()['code']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRefreshToken(): void
     {
         $request = new OAuth2Request();
@@ -103,9 +90,7 @@ class OAuth2RequestTest extends TestCase
         self::assertSame('refresh-token-1234', $request->getQueryParams()['refresh_token']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setScope(): void
     {
         $request = new OAuth2Request();
@@ -114,9 +99,7 @@ class OAuth2RequestTest extends TestCase
         self::assertSame('user', $request->getQueryParams()['scope']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setUserId(): void
     {
         $request = new OAuth2Request();

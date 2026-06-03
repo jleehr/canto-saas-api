@@ -14,15 +14,14 @@ namespace Fairway\CantoSaasApi\Tests;
 use Fairway\CantoSaasApi\Client;
 use Fairway\CantoSaasApi\ClientOptions;
 use GuzzleHttp\ClientInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 class ClientTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createObjectWithDefaultOptions(): void
     {
         $options = new ClientOptions([
@@ -36,9 +35,7 @@ class ClientTest extends TestCase
         self::assertInstanceOf(LoggerInterface::class, $client->getLogger());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createObjectWithCustomHttpClient(): void
     {
         $clientOptionsMock = $this->getMockBuilder(ClientOptions::class)
@@ -52,9 +49,7 @@ class ClientTest extends TestCase
         self::assertInstanceOf(\GuzzleHttp\Client::class, $client->getHttpClient());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createObjectWithCustomLogger(): void
     {
         $clientOptionsMock = $this->getMockBuilder(ClientOptions::class)

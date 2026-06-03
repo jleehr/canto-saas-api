@@ -13,13 +13,12 @@ namespace Fairway\CantoSaasApi\Tests\Http\LibraryTree;
 
 use Fairway\CantoSaasApi\Http\LibraryTree\GetTreeResponse;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class GetTreeResponseTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createValidResponse(): void
     {
         $response = new GetTreeResponse(
@@ -35,9 +34,7 @@ class GetTreeResponseTest extends TestCase
         self::assertSame('descending', $response->getSortDirection());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwExceptionWithEmptyBody(): void
     {
         self::expectExceptionCode(1626434956);
@@ -45,9 +42,7 @@ class GetTreeResponseTest extends TestCase
         new GetTreeResponse(new Response(200, [], ''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwExceptionWithInvalidJsonBody(): void
     {
         self::expectExceptionCode(1626434988);

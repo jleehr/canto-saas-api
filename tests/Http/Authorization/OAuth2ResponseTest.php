@@ -13,13 +13,12 @@ namespace Fairway\CantoSaasApi\Tests\Http\Authorization;
 
 use Fairway\CantoSaasApi\Http\Authorization\OAuth2Response;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class OAuth2ResponseTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createValidResponse(): void
     {
         $response = new OAuth2Response(
@@ -36,9 +35,7 @@ class OAuth2ResponseTest extends TestCase
         self::assertSame('refresh-token-1234', $response->getRefreshToken());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwExceptionWithEmptyBody(): void
     {
         self::expectExceptionCode(1626449779);
@@ -46,9 +43,7 @@ class OAuth2ResponseTest extends TestCase
         new OAuth2Response(new Response(200, [], ''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwExceptionWithInvalidJsonBody(): void
     {
         self::expectExceptionCode(1626449779);

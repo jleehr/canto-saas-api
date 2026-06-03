@@ -21,15 +21,14 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
 class AssetTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function batchUpdatePropertiesSuccessfulObtainResponse(): void
     {
         $mockHandler = new MockHandler([new Response(200, [], 'success')]);
@@ -44,9 +43,7 @@ class AssetTest extends TestCase
         self::assertSame('success', $response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function batchUpdatePropertiesExpectNotAuthorizedException(): void
     {
         $this->expectExceptionCode(1626717511);
@@ -67,9 +64,7 @@ class AssetTest extends TestCase
         $assetEndpoint->batchUpdateProperties($request);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function batchUpdatePropertiesExpectUnexpectedHttpStatusException(): void
     {
         $this->expectExceptionCode(1627649307);

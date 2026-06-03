@@ -13,13 +13,12 @@ namespace Fairway\CantoSaasApi\Tests\Http\Asset;
 
 use Fairway\CantoSaasApi\Http\Asset\BatchUpdatePropertiesResponse;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class BatchUpdatePropertiesResponseTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createValidResponse(): void
     {
         $httpResponse = new Response(200, [], 'success');

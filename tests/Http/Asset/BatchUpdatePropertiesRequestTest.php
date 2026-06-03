@@ -12,13 +12,12 @@ declare(strict_types=1);
 namespace Fairway\CantoSaasApi\Tests\Http\Asset;
 
 use Fairway\CantoSaasApi\Http\Asset\BatchUpdatePropertiesRequest;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class BatchUpdatePropertiesRequestTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createRequestWithDefaultConfig(): void
     {
         $request = new BatchUpdatePropertiesRequest();
@@ -28,9 +27,7 @@ class BatchUpdatePropertiesRequestTest extends TestCase
         self::assertNull($request->getPathVariables());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createRequestWithDefaultConfig123(): void
     {
         $request = new BatchUpdatePropertiesRequest();
