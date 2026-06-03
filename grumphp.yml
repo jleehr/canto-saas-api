@@ -6,6 +6,8 @@ grumphp:
   hide_circumvention_tip: true
   ignore_unstaged_changes: false
   process_timeout: 60
+  parallel:
+    enabled: false
   tasks:
     composer:
       no_check_publish: true
