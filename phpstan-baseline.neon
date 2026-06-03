@@ -1,0 +1,97 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Cannot call method in\(\) on iterable\<SplFileInfo\>\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: .php-cs-fixer.dist.php
+
+		-
+			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Endpoint/AbstractEndpoint.php
+
+		-
+			message: '#^Instanceof between Psr\\Http\\Message\\RequestInterface and Psr\\Http\\Message\\RequestInterface will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/Endpoint/AbstractEndpoint.php
+
+		-
+			message: '#^Method Fairway\\CantoSaasApi\\Http\\Asset\\AttachKeywordToContentRequest\:\:getPathVariables\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Http/Asset/AttachKeywordToContentRequest.php
+
+		-
+			message: '#^Method Fairway\\CantoSaasApi\\Http\\Asset\\AttachTagToContentRequest\:\:getPathVariables\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Http/Asset/AttachTagToContentRequest.php
+
+		-
+			message: '#^Method Fairway\\CantoSaasApi\\Http\\Asset\\ListSpecificSchemeRequest\:\:getQueryParams\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Http/Asset/ListSpecificSchemeRequest.php
+
+		-
+			message: '#^Method Fairway\\CantoSaasApi\\Http\\Asset\\RemoveKeywordToContentRequest\:\:getPathVariables\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Http/Asset/RemoveKeywordToContentRequest.php
+
+		-
+			message: '#^Method Fairway\\CantoSaasApi\\Http\\Asset\\RemoveTagFromContentRequest\:\:getPathVariables\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Http/Asset/RemoveTagFromContentRequest.php
+
+		-
+			message: '#^Method Fairway\\CantoSaasApi\\Http\\Asset\\RenameContentRequest\:\:getPathVariables\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Http/Asset/RenameContentRequest.php
+
+		-
+			message: '#^Method Fairway\\CantoSaasApi\\Http\\LibraryTree\\CreateAlbumFolderRequest\:\:getPathVariables\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Http/LibraryTree/CreateAlbumFolderRequest.php
+
+		-
+			message: '#^Method Fairway\\CantoSaasApi\\Http\\LibraryTree\\CreateAlbumFolderRequest\:\:getQueryParams\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Http/LibraryTree/CreateAlbumFolderRequest.php
+
+		-
+			message: '#^Method Fairway\\CantoSaasApi\\Http\\LibraryTree\\GetMyCollectionDetailInfoRequest\:\:getPathVariables\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Http/LibraryTree/GetMyCollectionDetailInfoRequest.php
+
+		-
+			message: '#^Method Fairway\\CantoSaasApi\\Http\\Upload\\GetUploadSettingRequest\:\:getQueryParams\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Http/Upload/GetUploadSettingRequest.php
+
+		-
+			message: '#^Property Fairway\\CantoSaasApi\\Http\\Upload\\GetUploadSettingResponse\:\:\$xAmzSignature \(string\|null\) is never assigned null so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/Http/Upload/GetUploadSettingResponse.php
+
+		-
+			message: '#^Method Fairway\\CantoSaasApi\\Http\\Upload\\QueryUploadStatusRequest\:\:getQueryParams\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Http/Upload/QueryUploadStatusRequest.php
+
+		-
+			message: '#^Call to function method_exists\(\) with ''GuzzleHttp\\\\Psr7\\\\Utils'' and ''tryFopen'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Http/UploadRequest.php
