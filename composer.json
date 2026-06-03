@@ -2,21 +2,30 @@
   "name": "jleehr/canto-saas-api",
   "type": "library",
   "description": "Client library for Canto SaaS APIs.",
-  "homepage": "https://github.com/ecentral/fairway-canto-saas-api/",
+  "homepage": "https://github.com/jleehr/canto-saas-api",
   "license": "MIT",
   "keywords": [
     "Canto",
     "API"
   ],
+  "support": {
+    "issues": "https://github.com/jleehr/canto-saas-api/issues",
+    "source": "https://github.com/jleehr/canto-saas-api"
+  },
   "authors": [
     {
+      "name": "jleehr",
+      "role": "Maintainer",
+      "homepage": "https://github.com/jleehr"
+    },
+    {
       "name": "Tim Schreiner",
-      "role": "Developer",
+      "role": "Developer (original)",
       "email": "tim.schreiner@km2.de"
     },
     {
       "name": "Christian Rodriguez Benthake",
-      "role": "Developer",
+      "role": "Developer (original)",
       "email": "c.rodriguez.benthake@ecentral.de"
     }
   ],

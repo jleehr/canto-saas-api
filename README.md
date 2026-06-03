@@ -1,6 +1,18 @@
 # PHP client for Canto API
 
-This library was originally maintained by [eCentral](https://github.com/ecentral) under the namespace fairway/canto-saas-api.
+A PHP library to interact with the [Canto SaaS API](https://www.canto.com/).
+
+This library was originally developed by [eCentral](https://github.com/ecentral)
+under the package name `fairway/canto-saas-api`. The original repository is no
+longer available; this is the maintained continuation, published as
+`jleehr/canto-saas-api`. The PHP namespace `Fairway\CantoSaasApi` is kept for
+backward compatibility.
+
+## Installation
+
+```bash
+composer require jleehr/canto-saas-api
+```
 
 ## Example usage
 
@@ -23,3 +35,7 @@ $allFolders = $client->libraryTree()
                      ->getTree(new GetTreeRequest())
                      ->getResults();
 ```
+
+## License
+
+MIT. See [LICENSE](LICENSE). Original work © eCentral GmbH.
