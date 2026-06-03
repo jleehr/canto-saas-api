@@ -6,8 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Fetch tags
-        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+        with:
+          # roave-backward-compatibility-check needs full history + tags to
+          # locate the baseline release; a shallow clone fails fast.
+          fetch-depth: 0
       - name: Install Dependencies for BC Check
         run: composer install --no-interaction --prefer-dist --no-scripts --no-progress
       - name: Roave BC Check
