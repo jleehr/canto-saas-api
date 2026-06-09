@@ -33,14 +33,15 @@ jobs:
           # locate the baseline release; a shallow clone fails fast.
           fetch-depth: 0
       - name: Roave BC Check
-        # Run the image manually so we can mark the workspace as a safe git
-        # directory; the container runs as root while the checkout is owned by
+        # Pinned by digest so Dependabot's github-actions ecosystem can track
+        # it (a `docker run` inside a `run:` step would be invisible to it).
+        # The entrypoint is overridden to mark the workspace as a safe git
+        # directory: the container runs as root while the checkout is owned by
         # the runner user, which otherwise trips git's dubious-ownership guard.
-        run: |
-          docker run --rm \
-            -v "$GITHUB_WORKSPACE":/github/workspace -w /github/workspace \
-            --entrypoint sh nyholm/roave-bc-check-ga -c \
-            'git config --global --add safe.directory /github/workspace && PATH="/composer/vendor/bin:$PATH" roave-backward-compatibility-check'
+        uses: docker://nyholm/roave-bc-check-ga@sha256:a9d3d932a4d3ba6a5a0563ef3788918a538198ee9c061a153f9b55caa8d3625f
+        with:
+          entrypoint: sh
+          args: '-c "git config --global --add safe.directory /github/workspace && PATH=/composer/vendor/bin:$PATH roave-backward-compatibility-check"'
 
   test:
     runs-on: ${{ matrix.operating-system }}
