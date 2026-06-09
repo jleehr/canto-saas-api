@@ -1,0 +1,16 @@
+version: 2
+updates:
+  # Keep the SHA-pinned actions in .github/workflows up to date. Dependabot
+  # bumps both the commit SHA and the trailing "# vX" comment, so pinning to a
+  # digest stays maintainable instead of freezing on an old version.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
+    groups:
+      # One PR per week for all action bumps instead of one per action.
+      github-actions:
+        patterns:
+          - "*"
