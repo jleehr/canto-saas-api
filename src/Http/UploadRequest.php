@@ -52,11 +52,22 @@ abstract class UploadRequest implements RequestInterface
                 'contents' => $value,
             ];
             if ($key === 'file') {
-                $data['filename'] = $formData['x-amz-meta-file_name'];
+                $data['filename'] = $this->sanitizeFileName((string)$formData['x-amz-meta-file_name']);
             }
             $multipart[] = $data;
         }
         return $multipart;
+    }
+
+    /**
+     * The file name ends up in the Content-Disposition header of the
+     * multipart part. Strip path segments, quotes and control characters
+     * (CR/LF) so a user-controlled name cannot manipulate the header.
+     */
+    private function sanitizeFileName(string $fileName): string
+    {
+        $fileName = basename($fileName);
+        return preg_replace('/[\x00-\x1F\x7F"\\\\]/', '', $fileName) ?? '';
     }
 
     public function toHttpRequest(Client $client, array $withHeaders = []): HttpRequest

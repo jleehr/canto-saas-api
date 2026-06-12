@@ -88,6 +88,10 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
       - name: Install dependencies
         run: composer update --prefer-dist --no-progress ${{ matrix.composer-options }}
+      - name: Audit dependencies
+        # composer.lock is intentionally untracked (library), so this audits
+        # the dependency set actually resolved for this CI run.
+        run: composer audit
       - name: Set git variables
         run: |
           git config --global user.email "you@example.com"

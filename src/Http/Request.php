@@ -63,7 +63,12 @@ abstract class Request implements RequestInterface, JsonSerializable
         $queryParams = $this->getQueryParams();
         if (is_array($pathVariables) === true) {
             $url = rtrim($url, '/');
-            $url .= '/' . implode('/', $pathVariables);
+            // Encode each segment so untrusted values cannot alter the
+            // request path (e.g. via "../", "?" or "#").
+            $url .= '/' . implode('/', array_map(
+                static fn ($segment): string => rawurlencode((string)$segment),
+                $pathVariables
+            ));
         }
         if (is_array($queryParams) && count($queryParams) > 0) {
             $url .= '?' . http_build_query($queryParams);

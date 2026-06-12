@@ -92,7 +92,13 @@ class OAuth2Request extends Request
         return $this;
     }
 
-    public function getQueryParams(): ?array
+    /**
+     * The OAuth parameters are sent in the form-encoded POST body, not as
+     * query parameters, so the credentials never appear in the request URL
+     * (and thus in access logs, proxy logs or APM traces). getQueryParams()
+     * intentionally returns null (parent default).
+     */
+    public function getFormParams(): array
     {
         return [
             'app_id' => $this->appId,

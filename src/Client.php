@@ -142,12 +142,17 @@ class Client
 
     protected function buildHttpClient(): ClientInterface
     {
+        $httpClientOptions = $this->options->getHttpClientOptions();
         return new \GuzzleHttp\Client([
             'allow_redirects' => true,
-            'connect_timeout' => (int)$this->options->getHttpClientOptions()['timeout'],
-            'debug' => (bool)$this->options->getHttpClientOptions()['debug'],
+            'connect_timeout' => (int)$httpClientOptions['timeout'],
+            // Also enforce a total request timeout; otherwise a server that
+            // accepts the connection but never responds blocks the caller
+            // indefinitely.
+            'timeout' => (int)$httpClientOptions['timeout'],
+            'debug' => (bool)$httpClientOptions['debug'],
             'headers' => [
-                'userAgent' => $this->options->getHttpClientOptions()['userAgent'],
+                'userAgent' => $httpClientOptions['userAgent'],
             ],
         ]);
     }

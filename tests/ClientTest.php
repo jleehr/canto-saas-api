@@ -36,6 +36,25 @@ class ClientTest extends TestCase
     }
 
     #[Test]
+    public function builtHttpClientUsesConnectAndRequestTimeout(): void
+    {
+        $options = new ClientOptions([
+            'cantoName' => 'not-empty',
+            'appId' => 'not-empty',
+            'appSecret' => 'not-empty',
+            'httpClientOptions' => [
+                'timeout' => 23,
+            ],
+        ]);
+        $client = new Client($options);
+
+        $httpClient = $client->getHttpClient();
+        assert($httpClient instanceof \GuzzleHttp\Client);
+        self::assertSame(23, $httpClient->getConfig('connect_timeout'));
+        self::assertSame(23, $httpClient->getConfig('timeout'));
+    }
+
+    #[Test]
     public function createObjectWithCustomHttpClient(): void
     {
         $clientOptionsMock = $this->getMockBuilder(ClientOptions::class)

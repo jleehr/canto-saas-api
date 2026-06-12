@@ -36,6 +36,15 @@ $allFolders = $client->libraryTree()
                      ->getResults();
 ```
 
+## Security notes
+
+- The `httpClientOptions => ['debug' => true]` option passes Guzzle's debug
+  mode through, which writes the complete HTTP traffic — including the
+  `Authorization` header and OAuth credentials — to STDOUT. Use it for local
+  development only, never in production. If you need custom HTTP behavior,
+  inject a preconfigured client via the `httpClient` option instead.
+- See [SECURITY.md](SECURITY.md) for how to report vulnerabilities.
+
 ## License
 
 MIT. See [LICENSE](LICENSE). Original work © eCentral GmbH.

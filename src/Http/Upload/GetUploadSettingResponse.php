@@ -59,8 +59,8 @@ final class GetUploadSettingResponse extends Response
         $this->xAmzMetaAlbumId = $this->data['x-amz-meta-album_id'] ?? '';
         $this->acl = $this->data['acl'] ?? '';
         $this->xAmzMetaTag = $this->data['x-amz-meta-tag'] ?? '';
-        $this->xAmzMetaFileName = $this->data['x-amz-meta-id'] ?? '';
-        $this->xAmzMetaId = $this->data['x-amz-meta-file_name'] ?? '';
+        $this->xAmzMetaFileName = $this->data['x-amz-meta-file_name'] ?? '';
+        $this->xAmzMetaId = $this->data['x-amz-meta-id'] ?? '';
         $this->url = $this->data['url'] ?? '';
         $this->key = $this->data['key'] ?? '';
         $this->isDeEnvironment = $isDeEnvironment;

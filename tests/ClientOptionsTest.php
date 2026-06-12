@@ -13,12 +13,22 @@ namespace Fairway\CantoSaasApi\Tests;
 
 use Fairway\CantoSaasApi\ClientOptions;
 use GuzzleHttp\Client;
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
 class ClientOptionsTest extends TestCase
 {
+    #[Test]
+    public function throwExceptionOnMissingOptions(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(1626849038);
+
+        new ClientOptions([]);
+    }
+
     #[Test]
     public function useDefaultValues(): void
     {

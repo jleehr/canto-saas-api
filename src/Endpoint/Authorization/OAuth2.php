@@ -27,14 +27,22 @@ final class OAuth2 extends AbstractEndpoint
      */
     public function obtainAccessToken(OAuth2Request $request): OAuth2Response
     {
+        // The credentials are sent in the form-encoded POST body instead of
+        // the query string (RFC 6749 section 2.3.1), so they cannot end up in
+        // access logs, proxy logs or APM traces.
         $uri = $this->buildRequestUrl($request);
-        $httpRequest = new Request($request->getMethod(), $uri);
+        $httpRequest = new Request(
+            $request->getMethod(),
+            $uri,
+            ['Content-Type' => 'application/x-www-form-urlencoded'],
+            http_build_query($request->getFormParams())
+        );
 
         try {
             $response = $this->sendRequest($httpRequest);
         } catch (GuzzleException $e) {
             throw new AuthorizationFailedException(
-                $e->getMessage(),
+                $this->sanitizeExceptionMessage($e->getMessage()),
                 1626447895,
                 $e
             );
@@ -43,19 +51,37 @@ final class OAuth2 extends AbstractEndpoint
         return new OAuth2Response($response);
     }
 
+    /**
+     * Defense in depth: even though the credentials are sent in the request
+     * body, mask them in case they show up in an exception message (e.g. via
+     * a response summary), so they cannot leak into logs or error trackers
+     * of the consuming application.
+     */
+    private function sanitizeExceptionMessage(string $message): string
+    {
+        // Case-insensitive, covering the url-encoded "=" (%3D) as well as
+        // JSON-style contexts ("app_secret":"..."), so the masking also
+        // catches encoded, differently cased or echoed variants. It may mask
+        // slightly too much (e.g. an url-encoded "&"), which is the safer
+        // failure mode than leaking a credential.
+        $message = preg_replace(
+            '/(app_secret|refresh_token|code)(=|%3D)[^&\s"\']+/i',
+            '$1$2***',
+            $message
+        ) ?? $message;
+        return preg_replace(
+            '/"(app_secret|refresh_token|code)"\s*:\s*"[^"]*"/i',
+            '"$1":"***"',
+            $message
+        ) ?? $message;
+    }
+
     protected function buildRequestUrl(RequestInterface $request): Uri
     {
-        $url = sprintf(
+        return new Uri(sprintf(
             'https://oauth.%s/oauth/api/oauth2/%s',
             $this->getClient()->getOptions()->getCantoDomain(),
             urlencode(trim($request->getApiPath(), '/'))
-        );
-
-        $queryParams = $request->getQueryParams();
-        if (count($queryParams) > 0) {
-            $url .= '?' . http_build_query($queryParams);
-        }
-
-        return new Uri($url);
+        ));
     }
 }

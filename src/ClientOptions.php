@@ -18,6 +18,11 @@ use Psr\Log\LoggerInterface;
 
 /**
  * @internal
+ *
+ * Note on httpClientOptions['debug']: when enabled, Guzzle/cURL writes the
+ * complete HTTP traffic - including the Authorization header and OAuth
+ * credentials - to STDOUT. Use for local development only, never in
+ * production. For advanced needs inject a preconfigured 'httpClient' instead.
  */
 class ClientOptions
 {
@@ -149,19 +154,19 @@ class ClientOptions
      */
     protected function validateOptions(array $options): void
     {
-        if (is_string($options['cantoName']) === false || $options['cantoName'] === '') {
+        if (is_string($options['cantoName'] ?? null) === false || $options['cantoName'] === '') {
             throw new InvalidArgumentException(
                 'Option cantoName is not given or not a string.',
                 1626849038
             );
         }
-        if (is_string($options['appId']) === false || $options['appId'] === '') {
+        if (is_string($options['appId'] ?? null) === false || $options['appId'] === '') {
             throw new InvalidArgumentException(
                 'Option appId is not given or not a string.',
                 1626849132
             );
         }
-        if (is_string($options['appSecret']) === false || $options['appSecret'] === '') {
+        if (is_string($options['appSecret'] ?? null) === false || $options['appSecret'] === '') {
             throw new InvalidArgumentException(
                 'Option appSecret is not given or not a string.',
                 1626849145
