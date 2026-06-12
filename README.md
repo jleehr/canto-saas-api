@@ -48,3 +48,8 @@ $allFolders = $client->libraryTree()
 ## License
 
 MIT. See [LICENSE](LICENSE). Original work © eCentral GmbH.
+
+## Trademark notice
+
+Canto is a trademark of Canto, Inc. This package is an independent,
+unofficial client library and is not affiliated with or endorsed by Canto.

@@ -1,9 +1,9 @@
 <?php
 $headerTemplate = <<<EOF
-This file is part of the "fairway_canto_saas_api" library by eCentral GmbH.
+This file is part of the Canto Saas Api package.
 
-For the full copyright and license information, please read the
-LICENSE file that was distributed with this source code.
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
 EOF;
 
 $config = new PhpCsFixer\Config();
