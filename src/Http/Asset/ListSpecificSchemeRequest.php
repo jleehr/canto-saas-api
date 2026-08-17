@@ -22,7 +22,7 @@ final class ListSpecificSchemeRequest extends Request
     private string $scheme;
     private string $keyword = '';
     private array $tags = [];
-    private string $tagsLiteral;
+    private string $tagsLiteral = '';
     private array $keywords = [];
     private array $approval = [];
     private array $owner = [];

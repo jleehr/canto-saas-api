@@ -16,6 +16,7 @@ use Fairway\CantoSaasApi\ClientOptions;
 use Fairway\CantoSaasApi\Endpoint\Authorization\AuthorizationFailedException;
 use Fairway\CantoSaasApi\Endpoint\Authorization\OAuth2;
 use Fairway\CantoSaasApi\Http\Authorization\OAuth2Request;
+use Fairway\CantoSaasApi\Http\InvalidRequestException;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
@@ -74,6 +75,10 @@ class OAuth2Test extends TestCase
         $oAuth2->obtainAccessToken($oAuthRequest);
     }
 
+    /**
+     * Security: the credentials belong into the request body (RFC 6749 section
+     * 2.3.1), so they cannot end up in access logs, proxy logs or apm traces.
+     */
     #[Test]
     public function obtainAccessTokenSendsCredentialsInRequestBodyInsteadOfQueryString(): void
     {
@@ -101,6 +106,11 @@ class OAuth2Test extends TestCase
         self::assertStringContainsString('grant_type=client_credentials', (string)$lastRequest->getBody());
     }
 
+    /**
+     * Security: an exception message of the http client can echo the request,
+     * so a credential in it must be masked before it reaches the log or error
+     * tracker of the consuming application.
+     */
     #[Test]
     public function obtainAccessTokenMasksCredentialsInExceptionMessage(): void
     {
@@ -134,6 +144,11 @@ class OAuth2Test extends TestCase
         }
     }
 
+    /**
+     * Security: the masking must not depend on the exact spelling of the echoed
+     * request, so an url-encoded, differently cased or json-style credential is
+     * masked as well.
+     */
     #[Test]
     public function obtainAccessTokenMasksEncodedAndDifferentlyCasedCredentialsInExceptionMessage(): void
     {
@@ -166,6 +181,109 @@ class OAuth2Test extends TestCase
         }
     }
 
+    #[Test]
+    public function obtainAccessTokenBuildsTheTokenUrl(): void
+    {
+        $mockHandler = new MockHandler([
+            new Response(
+                200,
+                [],
+                '{"accessToken":"access-token-1234","expiresIn":3600,"tokenType":"Bearer","refreshToken":"refresh-token-1234"}'
+            )
+        ]);
+        $clientMock = $this->buildClientMock($mockHandler);
+        assert($clientMock instanceof Client);
+
+        $oAuth2 = new OAuth2($clientMock);
+        $oAuthRequest = $this->buildRequestMock();
+        assert($oAuthRequest instanceof OAuth2Request);
+        $oAuth2->obtainAccessToken($oAuthRequest);
+
+        $lastRequest = $mockHandler->getLastRequest();
+        self::assertNotNull($lastRequest);
+        self::assertSame(
+            'https://oauth.canto.com/oauth/api/oauth2/token',
+            (string)$lastRequest->getUri()
+        );
+    }
+
+    /**
+     * The api path is validated instead of encoded, so a multi-segment path of
+     * a derived request keeps its slashes and its unreserved characters. The
+     * hard-coded "token" of OAuth2Request cannot show the difference, because
+     * it survives an encoding unchanged.
+     */
+    #[Test]
+    public function obtainAccessTokenKeepsAMultiSegmentApiPathUnencoded(): void
+    {
+        $mockHandler = new MockHandler([
+            new Response(
+                200,
+                [],
+                '{"accessToken":"access-token-1234","expiresIn":3600,"tokenType":"Bearer","refreshToken":"refresh-token-1234"}'
+            )
+        ]);
+        $clientMock = $this->buildClientMock($mockHandler);
+        assert($clientMock instanceof Client);
+
+        $requestMock = $this->buildRequestMock(['getFormParams', 'getApiPath']);
+        $requestMock->method('getApiPath')->willReturn('custom/token~v2');
+        assert($requestMock instanceof OAuth2Request);
+
+        (new OAuth2($clientMock))->obtainAccessToken($requestMock);
+
+        $lastRequest = $mockHandler->getLastRequest();
+        self::assertNotNull($lastRequest);
+        self::assertSame(
+            'https://oauth.canto.com/oauth/api/oauth2/custom/token~v2',
+            (string)$lastRequest->getUri()
+        );
+    }
+
+    /**
+     * Security: this endpoint builds its url without Request::buildRequestUrl()
+     * and sends the credentials along, so a derived request must not be able to
+     * point it at another endpoint.
+     */
+    #[Test]
+    public function obtainAccessTokenWithTraversingApiPathThrows(): void
+    {
+        $clientMock = $this->buildClientMock(new MockHandler([]));
+        assert($clientMock instanceof Client);
+
+        $requestMock = $this->buildRequestMock(['getFormParams', 'getApiPath']);
+        $requestMock->method('getApiPath')->willReturn('..');
+        assert($requestMock instanceof OAuth2Request);
+
+        $this->expectException(InvalidRequestException::class);
+        $this->expectExceptionCode(1786924800);
+
+        (new OAuth2($clientMock))->obtainAccessToken($requestMock);
+    }
+
+    /**
+     * Security: this endpoint applies the same rules as Request, so a
+     * surrounding slash is rejected here too instead of being trimmed away.
+     * Trimming would hide the difference between the two url builders and would
+     * turn a path of "/" into an empty one, which sends the credentials to the
+     * base url of the endpoint.
+     */
+    #[Test]
+    public function obtainAccessTokenWithSurroundingSlashesInApiPathThrows(): void
+    {
+        $clientMock = $this->buildClientMock(new MockHandler([]));
+        assert($clientMock instanceof Client);
+
+        $requestMock = $this->buildRequestMock(['getFormParams', 'getApiPath']);
+        $requestMock->method('getApiPath')->willReturn('/token/');
+        assert($requestMock instanceof OAuth2Request);
+
+        $this->expectException(InvalidRequestException::class);
+        $this->expectExceptionCode(1786924800);
+
+        (new OAuth2($clientMock))->obtainAccessToken($requestMock);
+    }
+
     protected function buildClientMock(MockHandler $mockHandler): MockObject
     {
         $optionsMock = $this->getMockBuilder(ClientOptions::class)
@@ -191,11 +309,14 @@ class OAuth2Test extends TestCase
         return $clientMock;
     }
 
-    protected function buildRequestMock(): MockObject
+    /**
+     * @param list<string> $mockedMethods
+     */
+    protected function buildRequestMock(array $mockedMethods = ['getFormParams']): MockObject
     {
         $requestMock = $this->getMockBuilder(OAuth2Request::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getFormParams'])
+            ->onlyMethods($mockedMethods)
             ->getMock();
         $requestMock->method('getFormParams')->willReturn([
             'app_id' => 'app-id-1234',

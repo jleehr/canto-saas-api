@@ -55,18 +55,25 @@ abstract class Request implements RequestInterface, JsonSerializable
         }
     }
 
+    /**
+     * Both path sources are treated as untrusted: a caller-controlled value
+     * must not be able to point the request at another endpoint. The rules
+     * live in ApiPathValidator, shared with the url builder of the OAuth2
+     * endpoint.
+     *
+     * @throws InvalidRequestException
+     */
     protected function buildRequestUrl(Client $client): Uri
     {
-        $url = $client->getApiUrl($this->getApiPath());
+        $url = $client->getApiUrl(ApiPathValidator::validateApiPath($this->getApiPath()));
 
         $pathVariables = $this->getPathVariables();
         $queryParams = $this->getQueryParams();
         if (is_array($pathVariables) === true) {
             $url = rtrim($url, '/');
-            // Encode each segment so untrusted values cannot alter the
-            // request path (e.g. via "../", "?" or "#").
             $url .= '/' . implode('/', array_map(
-                static fn ($segment): string => rawurlencode((string)$segment),
+                static fn (mixed $pathVariable): string
+                    => ApiPathValidator::validateAndEncodePathVariable($pathVariable),
                 $pathVariables
             ));
         }

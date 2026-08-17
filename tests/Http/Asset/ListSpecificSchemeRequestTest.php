@@ -12,65 +12,50 @@ declare(strict_types=1);
 namespace Fairway\CantoSaasApi\Tests\Http\Asset;
 
 use Fairway\CantoSaasApi\Client;
-use Fairway\CantoSaasApi\Http\Asset\GetContentDetailsRequest;
+use Fairway\CantoSaasApi\Http\Asset\ListSpecificSchemeRequest;
 use Fairway\CantoSaasApi\Http\InvalidRequestException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class GetContentDetailsRequestTest extends TestCase
+class ListSpecificSchemeRequestTest extends TestCase
 {
     #[Test]
-    public function pathVariablesAreAppendedToUrl(): void
+    public function validSchemeBuildsExpectedUrl(): void
     {
-        $request = new GetContentDetailsRequest('content-id-1234', 'image');
+        $request = (new ListSpecificSchemeRequest('image'))->setTagsLiteral('tag-1234');
         $httpRequest = $request->toHttpRequest($this->buildClientMock());
 
         self::assertSame(
-            'https://test.canto.com/api/v1/image/content-id-1234',
+            'https://test.canto.com/api/v1/image'
+            . '?tagsLiteral=tag-1234&operator=and&exactMatch=false&sortBy=time&sortDirection=ascending&end=100',
+            (string)$httpRequest->getUri()
+        );
+    }
+
+    #[Test]
+    public function freshlyConstructedRequestBuildsUrlWithoutTagsLiteral(): void
+    {
+        $request = new ListSpecificSchemeRequest('image');
+        $httpRequest = $request->toHttpRequest($this->buildClientMock());
+
+        self::assertSame(
+            'https://test.canto.com/api/v1/image'
+            . '?operator=and&exactMatch=false&sortBy=time&sortDirection=ascending&end=100',
             (string)$httpRequest->getUri()
         );
     }
 
     /**
-     * Security: a content id is an opaque value, so the url delimiters in it
-     * must not be able to redirect the request or append query parameters.
+     * Security: the scheme ends up in the request path, so a traversal in it
+     * must not be able to address another endpoint.
      */
     #[Test]
-    public function pathVariablesAreUrlEncoded(): void
+    public function schemeWithTraversalThrows(): void
     {
-        $request = new GetContentDetailsRequest('evil?x=1#y/z', 'image');
-        $httpRequest = $request->toHttpRequest($this->buildClientMock());
-
-        self::assertSame(
-            'https://test.canto.com/api/v1/image/evil%3Fx%3D1%23y%2Fz',
-            (string)$httpRequest->getUri()
-        );
-    }
-
-    /**
-     * Security: a traversing content id must not be able to address another
-     * endpoint.
-     */
-    #[Test]
-    public function traversingPathVariableIsRejected(): void
-    {
-        $request = new GetContentDetailsRequest('../../evil', 'image');
+        $request = new ListSpecificSchemeRequest('image/../../batch/delete');
 
         $this->expectException(InvalidRequestException::class);
-
-        $request->toHttpRequest($this->buildClientMock());
-    }
-
-    /**
-     * Security: the scheme is passed on as a path variable as well, so a dot
-     * segment in it must be rejected too.
-     */
-    #[Test]
-    public function dotSegmentPathVariableIsRejected(): void
-    {
-        $request = new GetContentDetailsRequest('content-id-1234', '..');
-
-        $this->expectException(InvalidRequestException::class);
+        $this->expectExceptionCode(1786924800);
 
         $request->toHttpRequest($this->buildClientMock());
     }

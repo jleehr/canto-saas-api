@@ -12,8 +12,10 @@ declare(strict_types=1);
 namespace Fairway\CantoSaasApi\Endpoint\Authorization;
 
 use Fairway\CantoSaasApi\Endpoint\AbstractEndpoint;
+use Fairway\CantoSaasApi\Http\ApiPathValidator;
 use Fairway\CantoSaasApi\Http\Authorization\OAuth2Request;
 use Fairway\CantoSaasApi\Http\Authorization\OAuth2Response;
+use Fairway\CantoSaasApi\Http\InvalidRequestException;
 use Fairway\CantoSaasApi\Http\RequestInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
@@ -23,6 +25,7 @@ final class OAuth2 extends AbstractEndpoint
 {
     /**
      * @throws AuthorizationFailedException
+     * @throws InvalidRequestException
      * @throws NotAuthorizedException
      */
     public function obtainAccessToken(OAuth2Request $request): OAuth2Response
@@ -76,12 +79,24 @@ final class OAuth2 extends AbstractEndpoint
         ) ?? $message;
     }
 
+    /**
+     * This endpoint builds its url on its own instead of going through
+     * Request::buildRequestUrl(), so it applies the same guard: the request
+     * class is extensible and a derived request could return a dynamic api
+     * path. Validating instead of encoding keeps a multi-segment path intact,
+     * because the validated path only consists of unreserved characters and
+     * the separating slashes. The raw path is validated, exactly like in
+     * Request::buildRequestUrl(): trimming a surrounding slash would make this
+     * builder the more permissive of the two.
+     *
+     * @throws InvalidRequestException
+     */
     protected function buildRequestUrl(RequestInterface $request): Uri
     {
         return new Uri(sprintf(
             'https://oauth.%s/oauth/api/oauth2/%s',
             $this->getClient()->getOptions()->getCantoDomain(),
-            urlencode(trim($request->getApiPath(), '/'))
+            ApiPathValidator::validateApiPath($request->getApiPath())
         ));
     }
 }
