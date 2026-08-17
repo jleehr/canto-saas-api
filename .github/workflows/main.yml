@@ -16,17 +16,17 @@ jobs:
       security-events: write
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v7.0.0
         with:
           persist-credentials: false
       - name: Run zizmor
-        uses: zizmorcore/zizmor-action@192e21d79ab29983730a13d1382995c2307fbcaa # v0.5.7
+        uses: zizmorcore/zizmor-action@2ae1ce9c6b7248fdfc5a4f47f3527240521f79b9 # v0.6.2
 
   roave_bc_check:
     name: Roave BC Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v7.0.0
         with:
           persist-credentials: false
           # roave-backward-compatibility-check needs full history + tags to
@@ -63,7 +63,7 @@ jobs:
     name: PHP ${{ matrix.php }} ${{ matrix.composer-options }}
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v7.0.0
         with:
           persist-credentials: false
       - name: Install PHP
@@ -81,7 +81,7 @@ jobs:
         id: composercache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_ENV
       - name: Cache dependencies
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
+        uses: actions/cache@3edfce9056124e459a23f683a21433670d47daca # v6
         with:
           path: ${{ env.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
